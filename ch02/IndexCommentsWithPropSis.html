@@ -11,7 +11,29 @@
     <script type="text/javascript">
     // Element we bind to
     var mountTarget = document.getElementById("ourFirstApp");
-
+var data ={  
+    "post":{
+        "id": 123,     
+        "content": "What we hope ever to do with ease, we must first learn to do with diligence. — Samuel Johnson",   
+        "user": "Mark Thomas",   
+        "comments": [
+                {        "id": 0,     
+                    "user": "David",     
+                    "content": "such. win."   }, 
+                {     "id": 1,     
+                    "user": "Peter",     
+                    "content": "Who was Samuel Johnson?"   
+                }, {   "id": 2,
+                    "user": "Mitchell",
+                    "content": "@Peter get off Letters and do your homework!" 
+                }, {  
+                    "id": 3,     
+                    "user": "Peter",
+                    "content": "@mitchell: OK"
+                }
+        ]
+    }
+};
 // The object we are going to create with all that lovely state
     var Post = React.createClass({
         propTypes:{
@@ -82,7 +104,7 @@
             });
         },
         handleSubmit:function(evt){
-            event.preventDefault();
+            evt.preventDefault();
             this.props.onCommentSubmit({
                 user: this.state.user.trim(),
                 content:this.state.content.trim()
@@ -109,21 +131,67 @@
                 );// container
         }
     });
+
+    var CommentBox = React.createClass({
+        propTypes:{
+            post:React.PropTypes.object,
+            comments:React.PropTypes.arrayOf(React.PropTypes.object),
+        },
+        getInitialState: function(){
+            return{
+                comments:this.props.comments
+            }
+        },
+        handleCommentSubmit: function(comment){
+            var comments = this.state.comments;
+            comment.id = Date.now();
+            var newComments = comments.concat([comment]);
+            this.setState({
+                comments:newComments
+            });
+        },
+        render:function(){
+            return (
+                React.createElement('div', {className:'commentBox'},
+            React.createElement(Post,{
+                id:this.props.post.id,
+                content:this.props.post.content,
+                user:this.props.post.user,
+            }),
+            this.state.comments.map(function(comment){
+                return React.createElement(Comment,{
+                    id: comment.id,
+                    key:comment.id,
+                    content: comment.content,
+                    user:comment.user,
+                })
+            }),
+            React.createElement(CreateComment, {
+                onCommentSubmit: this.handleCommentSubmit
+            })
+            )
+            )
+        }
+    })
     
 
-    var App = React.createElement(Post, {
-        id:1,
-        content:" said this is a Post!",
-        user: "mark",
-    },
-        React.createElement(Comment,{
-            id:2,
-            user:'bob',
-            content:"commented..Wow how cool!"
-        }),
-        React.createElement(CreateComment,{onCommentSubmit:Comment.DoAThingOnSubmit})
-    );
+    // var App = React.createElement(Post, {
+    //     id:1,
+    //     content:" said this is a Post!",
+    //     user: "mark",
+    // },
+    //     React.createElement(Comment,{
+    //         id:2,
+    //         user:'bob',
+    //         content:"commented..Wow how cool!"
+    //     }),
+    //     React.createElement(CreateComment,{onCommentSubmit:Comment.DoAThingOnSubmit})
+    // );
 
+ReactDOM.render(React.createElement(CommentBox, {
+    comments:data.post.comments,
+    post:data.post,
+}), mountTarget);
     </script>
 </body>
 </html>
