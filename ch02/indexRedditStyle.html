@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React in action</title>
+<script src="https://cdn.jsdelivr.net/g/react@15.3.1(react.js+react-dom.js)"></script>
+
+</head>
+<body>
+    <div id='redditLink'></div>
+</body>
+
+<script type="text/javascript">
+
+var targetEle = document.getElementById('redditLink');
+// createClass around createElement and containsstate info
+var LinkRow = React.createClass({
+    PropTypes:{
+        Title: React.PropTypes.string.isRequired,
+        id: React.PropTypes.string.isRequired,
+        link: React.PropTypes.string.isRequired
+    },
+    render:function(){
+        return(
+            React.createElement('div', {className:"entry unvoted"},
+                React.createElement('p',{className:'title'},
+                    React.createElement('a', {className:'title may-blank outbound', href:this.props.link, 'data-Event-Action':'title'}, this.props.Title),
+                    React.createElement('span', {className:'domain'}, 'domain')
+                )
+            )
+        );
+    }
+});
+
+App = React.createElement(LinkRow, {
+    Title: "Java9's immutable collections are easier to create but use with caution",
+    id:5,
+    link: "https://jepsen.io/analyses/mongodb-3-4-0-rc3"
+});
+
+ReactDOM.render(App, targetEle);
+</script>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React in action</title>
+<script src="https://cdn.jsdelivr.net/g/react@15.3.1(react.js+react-dom.js)"></script>
+
+</head>
+<body>
+    <div id="ourFirstApp"></div>
+    <script type="text/javascript">
+    // Element we bind to
+    var mountTarget = document.getElementById("ourFirstApp");
+
+// The object we are going to create with all that lovely state
+    var Post = React.createClass({
+        propTypes:{
+            user:React.PropTypes.string.isRequired,
+            content:React.PropTypes.string.isRequired,
+            id:React.PropTypes.number.isRequired,
+        }, // Properties we can reference
+        render:function(){
+            return(
+                React.createElement('div',{className:'post'},
+                    React.createElement('h2',{className:'postAuthor', id: this.props.id},
+                    this.props.user,
+                    React.createElement('span', {className:'postBody'},
+                    this.props.content)
+                    )
+                )
+            );
+        }
+    });
+
+    var App = React.createElement(Post, {
+        id:1,
+        content:" said this is a Post!",
+        user: "mark"
+    });
+        ReactDOM.render(App, mountTarget);
+    </script>
+</body>
+</html>
