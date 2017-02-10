@@ -1,0 +1,5 @@
+Hi, I've got a problem involving Document Content Types, and managed meta-data fields.
+Using On Prem 2013, you cannot update a Managed Metadata field, programatically once it has been set (programatically or via the gui).
+1. Create Document based Content Type
+2. Add Managed metadata field.
+3. Add to
