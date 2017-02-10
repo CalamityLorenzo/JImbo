@@ -1,9 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import {CreateComment} from "./components/CreateComment";
+var PostData = require("./PostData.json")
+// import {CreateComment} from "./components/CreateComment";
+import {Post} from "./components/Post";
 
+//    <CreateComment defaultUser='Pigeon' defaultContent="" />
 ReactDOM.render(
-    <CreateComment user='Pigeon' content="" />, document.getElementById('commentCentrals')
+    <Post id={0} userDef="Derek Hinds" content="Everybody should follow their web posts - Sammy j" comments={PostData.comments} />
+, document.getElementById('commentCentrals')
 )
 

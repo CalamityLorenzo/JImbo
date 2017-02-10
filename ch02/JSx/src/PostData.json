@@ -1,4 +1,6 @@
-{   "id": 123,     
+{
+    
+    "id": 123,     
     "content": "What we hope ever to do with ease, we must first learn to do with diligence. — Samuel Johnson",   
     "user": "Mark Thomas",   
     "comments": [
@@ -16,5 +18,5 @@
                  "user": "Peter",
                  "content": "@mitchell: OK"
             }
-    ]
+        ]
 }
