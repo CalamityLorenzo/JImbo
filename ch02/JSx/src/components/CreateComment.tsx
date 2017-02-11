@@ -26,6 +26,10 @@ export class CreateComment extends React.Component<ICreateCommentProps, ICreateC
     handleSubmit(evt:any):void{
         evt.preventDefault();
         this.onCreateComment(this.state.user, this.state.content);
+        this.setState({
+            user:"",
+            content:""
+        })
     }
     render(){
         return (<form className="CreateComment" onSubmit={this.handleSubmit}>

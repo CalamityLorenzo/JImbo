@@ -7,7 +7,7 @@ import {ICommentThread, IComments} from "../datamodel"
 export class CommentThread extends React.Component<ICommentThread, IComments>{
     constructor(props:any){
         super(props);
-        this.handleCreateComment = this.handleCreateComment.bind(this);
+       // this.handleCreateComment = this.handleCreateComment.bind(this);
         this.state={
             comments:this.props.comments
         };
@@ -30,7 +30,7 @@ export class CommentThread extends React.Component<ICommentThread, IComments>{
                 {this.state.comments.map(cmt=>{
                            return <Comment key={cmt.id} id={cmt.id} user={cmt.user.toString()} content={cmt.content.toString()} />
                     })}
-                <CreateComment user="" content="" onCreateComment={(s,e)=>this.handleCreateComment(s,e)} />
+                <CreateComment user="" content="" onCreateComment={this.handleCreateComment.bind(this)} />
             </div>
         )
     }

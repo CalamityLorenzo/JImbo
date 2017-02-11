@@ -97,7 +97,7 @@ var CommentThread = (function (_super) {
     __extends(CommentThread, _super);
     function CommentThread(props) {
         var _this = _super.call(this, props) || this;
-        _this.handleCreateComment = _this.handleCreateComment.bind(_this);
+        // this.handleCreateComment = this.handleCreateComment.bind(this);
         _this.state = {
             comments: _this.props.comments
         };
@@ -115,13 +115,12 @@ var CommentThread = (function (_super) {
         });
     };
     CommentThread.prototype.render = function () {
-        var _this = this;
         return (React.createElement("div", { className: "commentBox" },
             React.createElement(Post_1.Post, { id: this.props.id, user: this.props.user, content: this.props.content }),
             this.state.comments.map(function (cmt) {
                 return React.createElement(Comment_1.Comment, { key: cmt.id, id: cmt.id, user: cmt.user.toString(), content: cmt.content.toString() });
             }),
-            React.createElement(CreateComment_1.CreateComment, { user: "", content: "", onCreateComment: function (s, e) { return _this.handleCreateComment(s, e); } })));
+            React.createElement(CreateComment_1.CreateComment, { user: "", content: "", onCreateComment: this.handleCreateComment.bind(this) })));
     };
     return CommentThread;
 }(React.Component));
@@ -241,6 +240,10 @@ var CreateComment = (function (_super) {
     CreateComment.prototype.handleSubmit = function (evt) {
         evt.preventDefault();
         this.onCreateComment(this.state.user, this.state.content);
+        this.setState({
+            user: "",
+            content: ""
+        });
     };
     CreateComment.prototype.render = function () {
         return (React.createElement("form", { className: "CreateComment", onSubmit: this.handleSubmit },
