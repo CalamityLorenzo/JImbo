@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -89,28 +89,43 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var React = __webpack_require__(0);
-var CreateComment_1 = __webpack_require__(4);
-var Post = (function (_super) {
-    __extends(Post, _super);
-    function Post(props) {
+var Post_1 = __webpack_require__(6);
+var Comment_1 = __webpack_require__(4);
+var CreateComment_1 = __webpack_require__(5);
+// This holds the whole thing together.
+var CommentThread = (function (_super) {
+    __extends(CommentThread, _super);
+    function CommentThread(props) {
         var _this = _super.call(this, props) || this;
+        _this.handleCreateComment = _this.handleCreateComment.bind(_this);
         _this.state = {
-            user: _this.props.userDef,
-            content: _this.props.content,
-            id: _this.props.id
+            comments: _this.props.comments
         };
         return _this;
     }
-    Post.prototype.render = function () {
-        return (React.createElement("div", { className: "post" },
-            React.createElement("h2", { className: "postAuthor", id: this.props.id.toString() }, this.state.user),
-            React.createElement("div", { className: "postBody" }, this.state.content),
-            this.props.children,
-            React.createElement(CreateComment_1.CreateComment, { defaultUser: "", defaultContent: "" })));
+    CommentThread.prototype.handleCreateComment = function (name, content) {
+        var newId = Math.floor(Math.random() * 100000) + 200;
+        var newComments = this.state.comments.concat([{
+                id: newId,
+                user: name,
+                content: content
+            }]);
+        this.setState({
+            comments: newComments
+        });
     };
-    return Post;
+    CommentThread.prototype.render = function () {
+        var _this = this;
+        return (React.createElement("div", { className: "commentBox" },
+            React.createElement(Post_1.Post, { id: this.props.id, user: this.props.user, content: this.props.content }),
+            this.state.comments.map(function (cmt) {
+                return React.createElement(Comment_1.Comment, { key: cmt.id, id: cmt.id, user: cmt.user.toString(), content: cmt.content.toString() });
+            }),
+            React.createElement(CreateComment_1.CreateComment, { user: "", content: "", onCreateComment: function (s, e) { return _this.handleCreateComment(s, e); } })));
+    };
+    return CommentThread;
 }(React.Component));
-exports.Post = Post;
+exports.CommentThread = CommentThread;
 
 
 /***/ }),
@@ -168,16 +183,50 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var React = __webpack_require__(0);
+var Comment = (function (_super) {
+    __extends(Comment, _super);
+    function Comment(props) {
+        return _super.call(this, props) || this;
+    }
+    Comment.prototype.render = function () {
+        return (React.createElement("div", { className: "comment" },
+            React.createElement("h2", { className: "commentAuthor" }, this.props.user),
+            React.createElement("span", { className: "commentContent" }, this.props.content)));
+    };
+    return Comment;
+}(React.Component));
+exports.Comment = Comment;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var React = __webpack_require__(0);
 var CreateComment = (function (_super) {
     __extends(CreateComment, _super);
     function CreateComment(props) {
         var _this = _super.call(this, props) || this;
+        _this.onCreateComment = _this.props.onCreateComment;
+        _this.onCreateComment = _this.onCreateComment;
         _this.handleTextChange = _this.handleTextChange.bind(_this);
         _this.handleUserChange = _this.handleUserChange.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
         _this.state = {
-            user: _this.props.defaultUser,
-            content: _this.props.defaultContent
+            user: _this.props.user,
+            content: _this.props.content
         };
         return _this;
     }
@@ -191,7 +240,7 @@ var CreateComment = (function (_super) {
     };
     CreateComment.prototype.handleSubmit = function (evt) {
         evt.preventDefault();
-        console.log('submit');
+        this.onCreateComment(this.state.user, this.state.content);
     };
     CreateComment.prototype.render = function () {
         return (React.createElement("form", { className: "CreateComment", onSubmit: this.handleSubmit },
@@ -205,7 +254,45 @@ exports.CreateComment = CreateComment;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var React = __webpack_require__(0);
+var Post = (function (_super) {
+    __extends(Post, _super);
+    function Post(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            id: _this.props.id,
+            user: _this.props.user,
+            content: _this.props.content
+        };
+        return _this;
+    }
+    Post.prototype.render = function () {
+        return (React.createElement("div", { className: "post" },
+            React.createElement("h2", { className: "postAuthor", id: this.props.id.toString() }, this.state.user),
+            React.createElement("div", { className: "postBody" }, this.state.content)));
+    };
+    return Post;
+}(React.Component));
+exports.Post = Post;
+
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -214,9 +301,9 @@ var React = __webpack_require__(0);
 var ReactDOM = __webpack_require__(3);
 var PostData = __webpack_require__(2);
 // import {CreateComment} from "./components/CreateComment";
-var Post_1 = __webpack_require__(1);
+var CommentThread_1 = __webpack_require__(1);
 //    <CreateComment defaultUser='Pigeon' defaultContent="" />
-ReactDOM.render(React.createElement(Post_1.Post, { id: 0, userDef: "Derek Hinds", content: "Everybody should follow their web posts - Sammy j", comments: PostData.comments }), document.getElementById('commentCentrals'));
+ReactDOM.render(React.createElement(CommentThread_1.CommentThread, { id: PostData.id, user: PostData.user, content: PostData.content, comments: PostData.comments }), document.getElementById('commentCentrals'));
 
 
 /***/ })

@@ -3,11 +3,11 @@ import * as ReactDOM from "react-dom";
 
 var PostData = require("./PostData.json")
 // import {CreateComment} from "./components/CreateComment";
-import {Post} from "./components/Post";
+import {CommentThread} from "./components/CommentThread";
 
 //    <CreateComment defaultUser='Pigeon' defaultContent="" />
 ReactDOM.render(
-    <Post id={0} userDef="Derek Hinds" content="Everybody should follow their web posts - Sammy j" comments={PostData.comments} />
+    <CommentThread id={PostData.id} user={PostData.user} content={PostData.content} comments={PostData.comments} />
 , document.getElementById('commentCentrals')
 )
 

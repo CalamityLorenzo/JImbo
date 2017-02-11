@@ -1,26 +1,20 @@
 import * as React from "react";
+import {ICreateCommentProps, ICreateCommentState} from "../datamodel"
 
-export interface CommentProps{
-    defaultUser:string,
-    defaultContent:string
-} 
-
-export interface CreateCommentState{
-    user:string,
-    content:string
-}
-
-export class CreateComment extends React.Component<CommentProps, CreateCommentState>{
+export class CreateComment extends React.Component<ICreateCommentProps, ICreateCommentState>{
     constructor(props:any){
         super(props);
+        this.onCreateComment = this.props.onCreateComment;
+        this.onCreateComment = this.onCreateComment;
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handleUserChange = this.handleUserChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-            user:this.props.defaultUser,
-            content:this.props.defaultContent
+            user:this.props.user,
+            content:this.props.content
         }
     }
+    onCreateComment: (name:string, content:string)=>void
     handleUserChange(evt:any):void{
         this.setState({user:evt.target.value});
     }
@@ -31,7 +25,7 @@ export class CreateComment extends React.Component<CommentProps, CreateCommentSt
     }
     handleSubmit(evt:any):void{
         evt.preventDefault();
-        console.log('submit')
+        this.onCreateComment(this.state.user, this.state.content);
     }
     render(){
         return (<form className="CreateComment" onSubmit={this.handleSubmit}>
